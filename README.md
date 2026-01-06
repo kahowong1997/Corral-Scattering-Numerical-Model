@@ -55,6 +55,17 @@ Optimized for the simulation of massive and arbitrary corral geometries on subst
 * **Real-Space Topological Diagnostic:** Computes the localized effective Hamiltonian ($H_{\text{top}}$) of a "dressed" substrate, providing the backend for computation of local winding number density for topological characterization and Majorana Bound State (MBS) wavefunction visualization.
 
 ---
+## 📈 Results & Verification
+
+This framework is currently being utilized for a forthcoming publication regarding manipulation of topology using quantum corrals in MSH systems. To maintain the novelty of the research, primary phase diagrams and specific parameter sets are currently withheld.
+
+However, verification scripts are provided in the `/tests` directory to demonstrate the framework's mathematical and computational integrity:
+
+* **Mathematical Consistency:** Validates the Analytical Residue Engine against brute-force numerical integration of the Green's function, ensuring the complex-pole summation remains exact across the Brillouin Zone.
+* **Computational Scalability:** Demonstrates the amortized $O(N)$ scaling of the 2D Real-Space matrix assembly through benchmarks of the vectorized library lookup system.
+* **Symmetry Integrity:** Confirms the preservation of BDI chiral symmetry in the effective Hamiltonian, which is essential for the valid calculation of topological winding numbers and Pfaffian invariants.
+
+---
 
 ## 🛠 Performance & Numerical Optimizations
 * **Numba JIT Acceleration:** The entire pipeline is JIT-compiled to achieve C-level execution speeds for large-scale parameter sweeps.
