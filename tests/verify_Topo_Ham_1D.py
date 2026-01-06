@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from MSH_Quasi_1D import Topo_Ham_1D
 from collections import namedtuple
 
