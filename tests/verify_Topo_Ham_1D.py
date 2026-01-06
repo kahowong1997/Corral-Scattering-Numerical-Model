@@ -33,7 +33,7 @@ def test_1D_matrix():
     kx = 1.347 
     V_values = [1e6, 1e9, 1e12]
   
-    for V in V_list:
+    for V in V_values:
         # 1. Setup Quasi-1D params in the 'pinched' limit
         params = Params(t=1.0, mu=-3.5, alpha=0.2, Delta=0.3, W_c=np.sqrt(3), V=V, J=0.5)
         
