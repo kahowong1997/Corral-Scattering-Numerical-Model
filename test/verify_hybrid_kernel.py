@@ -3,6 +3,7 @@ import os
 import numpy as np
 import numba
 from scipy.integrate import simpson
+from collections import namedtuple
 
 # Adds the parent directory to sys.path so Python can find your modules
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -58,15 +59,10 @@ def numerical_GF(kx, Y, params, steps=1000):
     normalization = np.sqrt(3) / (4 * np.pi)
     return G_integrated * normalization
 
-class MockParams:
-    def __init__(self):
-        self.t = 1.0
-        self.mu = -3.5
-        self.alpha = 0.21
-        self.Delta = 0.36
-      
+params = namedtuple('Params', ['t', 'mu', 'alpha', 'Delta'])
+
 def test_hybrid_kernel_consistency():
-    params = MockParams()
+    params = Params(t=1.0, mu=-3.5, alpha=0.21, Delta=0.36)
     kx_test = 1.0 # Standard test with real kx
     Y_test = 3 * np.sqrt(3) 
     
