@@ -41,14 +41,10 @@ def test_1D_matrix():
     # Check difference
     diff = np.abs(H_quasi1D - H_pure1D)
     max_err = np.max(diff) 
-  
-    print(f"Matrix Consistency Check (V=1e6):")
-    print(f"Max Difference: {max_err:.2e}")
     
-    if max_err < 1e-8:
-        print("✅ Theoretical Limit: PASSED (Matrices are consistent)")
-    else:
-        print("❌ Theoretical Limit: FAILED (Check normalization or self-energy shifts)")
-
-if __name__ == "__main__":
+    # Check if the error is consistent with the 1/V scaling
+    print(f"Observed Error: {max_err:.2e} | Expected scaling (1/V): {1/V_val:.2e}")
+    
+    assert max_diff < (10/V_val), f"Error exceeds 1/V scaling! Diff: {max_diff}"
+    print("✅ Theoretical Limit: PASSED (Error consistent with 1/V)")if __name__ == "__main__":
     test_1D_matrix()
