@@ -29,24 +29,30 @@ def pure_1D_hamiltonian(kx, t, mu, alpha, Delta, J):
 
 def test_1D_matrix():
     params = Params(t=1.0, mu=-3.5, alpha=0.2, Delta=0.3, W_c=np.sqrt(3), V=1e6, J=0.5)
+    
     kx = 1.347 
-    
-    numerical_gap = []
-    theoretical_gap = []
-
-
-    H_quasi1D = Topo_Ham_1D(kx, params)
-    H_pure1D = pure_1D_hamiltonian(kx, params.t, params.mu, params.alpha, params.Delta, params.J)
+    V_values = [1e6, 1e9, 1e12]
   
-    # Check difference
-    diff = np.abs(H_quasi1D - H_pure1D)
-    max_err = np.max(diff) 
-    
-    # Check if the error is consistent with the 1/V scaling
-    print(f"Observed Error: {max_err:.2e} | Expected scaling (1/V): {1/params.V:.2e}")
-    
-    assert max_err < (10/params.V), f"Error exceeds 1/V scaling! Diff: {max_err}"
-    print("✅ Theoretical Limit: PASSED (Error consistent with 1/V)")
+    for V in V_list:
+        # 1. Setup Quasi-1D params in the 'pinched' limit
+        params = Params(t=1.0, mu=-3.5, alpha=0.2, Delta=0.3, W_c=np.sqrt(3), V=V, J=0.5)
+        
+        # 2. Compute Numerical Matrix
+        H_num = Topo_Ham_1D(kx_test, params)
+        
+        # 3. Compute your Analytical Matrix
+        # Note: We use the same 'bare' params to check 1/V convergence
+        H_analytical = pure_1D_hamiltonian(kx_test, params.t, params.mu, params.alpha, params.Delta, params.J)
+        
+        # 4. Analyze Error
+        max_diff = np.max(np.abs(H_num - H_analytical))
+        print(f"{V:<12.0e} | {max_diff:<15.2e} | {1/V:.0e}")
 
+        # Assertion: Error should be roughly proportional to 1/V
+        # We allow a small factor (e.g., 10) for pre-factors in the T-matrix expansion
+        assert max_diff < (10 / V), f"Error at V={V} is too high: {max_diff}"
+
+    print("\n✅ Verification Successful: Error scales linearly with 1/V.")
+  
 if __name__ == "__main__":
     test_1D_matrix()
