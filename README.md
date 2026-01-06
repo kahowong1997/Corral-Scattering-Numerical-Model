@@ -43,7 +43,16 @@ This module utilizes the analytical kernel to solve for systems with longitudina
 
 * **Hybrid Propagator Construction:** Directly computes the $(k_x, Y)$ Green's Function. It utilizes the Hermitian relation $G(k_x, -Y) = [G(k_x^*, Y)]^\dagger$ to resolve the propagator across the entire spatial domain while maintaining validity in the analytical $Y > 0$ half-plane.
 * **Two-Site T-Matrix Renormalization:** Implements a scattering formalism for corral boundaries (top and bottom). It features a **Dual-Regime Solver** that switches inversion methods based on the scattering potential strength ($V$) to avoid precision loss in the strong-coupling limit.
-* **Effective Hamiltonian Mapping:** Extracts the renormalized quasiparticle spectrum through self-energy mapping ($H_{\text{eff}} = -G^{-1} + J\tau_0\sigma_z$). This allows for the identification of topological phases and Majorana signatures in the hybrid representation.
+* **Effective Hamiltonian Mapping:** Extracts the renormalized quasiparticle spectrum through self-energy mapping ($H_{\text{eff}} = -G^{-1} + J\tau_0\sigma_z$). This allows for the identification of topological phases and Majorana signatures using Pfaffians and winding number in the hybrid representation.
+
+---
+
+## 3. 2D Real-Space Module (`MSH_2D_Library.py`)
+Optimized for the simulation of massive and arbitrary corral geometries on substrate with periodic boundary condition.
+
+* **Symmetry-Folded Library Construction:** Utilizes the Hermitian relation of the Green's function to halve the integration search space. Unique spatial displacements are sorted and filtered to achieve $O(1)$ lookup times during global matrix assembly.
+* **Eigen-Basis T-Matrix Solver:** Decomposes the scattering environment into decoupled chiral sectors. This enables analytical T-matrix generation via eigenvector scaling, bypassing the numerical instability of large-scale matrix inversions near resonance.
+* **Real-Space Topological Diagnostic:** Computes the localized effective Hamiltonian ($H_{\text{top}}$) of a "dressed" substrate, providing the backend for computation of local winding number density for topological characterization and Majorana Bound State (MBS) wavefunction visualization.
 
 ---
 
