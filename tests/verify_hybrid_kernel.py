@@ -74,7 +74,7 @@ def test_hybrid_kernel_consistency():
     
     # Assert that the analytical engine is exact to within a high tolerance
     assert max_err < 1e-10, f"Kernel mismatch found! Error: {max_err}"
-    print("✅ Verification Successful: Analytical Engine matches Numerical Integral.")
+    print("✅ Verification Successful: Analytical Result matches Numerical Integral.")
 
 if __name__ == "__main__":
     test_hybrid_kernel_consistency()
