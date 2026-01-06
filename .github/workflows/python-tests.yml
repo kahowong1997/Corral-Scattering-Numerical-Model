@@ -16,7 +16,7 @@ jobs:
         pip install numpy scipy numba
     - name: Run Kernel Validation
       run: |
-        python tests/verify_hybrid_kernel.py
+        python -m tests.verify_hybrid_kernel
     - name: Run Quasi-1D Validation
       run: |
-        python tests/verify_Topo_Ham_1D.py
+        python -m tests.verify_Topo_Ham_1D
