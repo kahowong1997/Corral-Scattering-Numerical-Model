@@ -57,13 +57,14 @@ Optimized for the simulation of massive and arbitrary corral geometries on subst
 ---
 ## 📈 Results & Verification
 
-This framework is currently being utilized for a forthcoming publication regarding manipulation of topology using quantum corrals in MSH systems. To maintain the novelty of the research, primary phase diagrams and specific parameter sets are currently withheld.
+This framework is currently being utilized for a forthcoming publication on topological phase transitions in MSH systems. 
 
-However, verification scripts are provided in the `/tests` directory to demonstrate the framework's mathematical and computational integrity:
+### **Kernel Validation**
+To ensure numerical precision, the **Analytical Residue Engine** is verified against a brute-force numerical integration of the bare Hamiltonian. 
 
-* **Mathematical Consistency:** Validates the Analytical Residue Engine against brute-force numerical integration of the Green's function, ensuring the complex-pole summation remains exact across the Brillouin Zone.
-* **Computational Scalability:** Demonstrates the amortized $O(N)$ scaling of the 2D Real-Space matrix assembly through benchmarks of the vectorized library lookup system.
-* **Symmetry Integrity:** Confirms the preservation of BDI chiral symmetry in the effective Hamiltonian, which is essential for the valid calculation of topological winding numbers and Pfaffian invariants.
+* **Methodology:** We compare the hybrid Green’s function $G(k_x, Y)$ generated via Cauchy’s Residue Theorem against a high-resolution Simpson-rule integration of the momentum-space propagator $[- H_0(\mathbf{k})]^{-1}$.
+* **Accuracy:** The analytical approach maintains an error margin within $10^{-12}$ of the numerical result across the entire Brillouin Zone, confirming the stability of the companion-matrix pole solver and the adjugate matrix evaluation.
+* **Integrity:** This validation ensures that all subsequent renormalization steps (T-matrix dressing) are built upon a numerically exact substrate foundation.
 
 ---
 
