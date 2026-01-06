@@ -59,12 +59,22 @@ Optimized for the simulation of massive and arbitrary corral geometries on subst
 
 This framework is currently being utilized for a forthcoming publication on topological phase transitions in MSH systems. 
 
-### **Kernel Validation**
-To ensure numerical precision, the **Analytical Residue Engine** is verified against a brute-force numerical integration of the bare Hamiltonian. 
+**Verification and Numerical Integrity**
+The model is continuously validated through a dual-testing suite to ensure both mathematical precision and physical consistency.
 
-* **Methodology:** We compare the hybrid Green’s function $G(k_x, Y)$ generated via Cauchy’s Residue Theorem against a high-resolution Simpson-rule integration of the momentum-space propagator $[- H_0(\mathbf{k})]^{-1}$.
-* **Accuracy:** The analytical approach maintains an error margin within $10^{-12}$ of the numerical result across the entire Brillouin Zone, confirming the stability of the companion-matrix pole solver and the adjugate matrix evaluation.
-* **Integrity:** This validation ensures that all subsequent renormalization steps (T-matrix dressing) are built upon a numerically exact substrate foundation.
+### **1. Kernel Validation (`verify_hybrid_kernel.py`)**
+This test verifies the foundational **Analytical Residue Engine** against a brute-force numerical integration.
+* **Methodology**: We compare the hybrid Green’s function $G(k_x, Y)$ generated via Cauchy’s Residue Theorem against a high-resolution Simpson-rule integration of the momentum-space propagator $[- H_0(\mathbf{k})]^{-1}$.
+* **Accuracy**: The analytical approach maintains an error margin within $10^{-14}$, reaching the limit of double-precision complex math.
+* **Significance**: This ensures that the companion-matrix pole solver and adjugate evaluations are exact before any renormalization is applied.
+
+
+
+### **2. Topological Hamiltonian 1D Limit (`verify_Topo_Ham_1D.py`)**
+This test verifies the physical validity of the **T-matrix renormalization** and the **Quasi-1D geometry**.
+* **Methodology**: By setting the corral width to two lattice spacings ($W_c = \sqrt{3}$) and the scattering potential to the hard-wall limit ($V \to \infty$), we "pinch" the quasi-1D strip into a strictly 1D wire.
+* **Physical Identity**: The resulting numerical $4 \times 4$ matrix is compared directly against the analytical 1D Shiba-chain Hamiltonian. 
+* **Significance**: Passing this test confirms that the Dyson equation correctly integrates out the substrate degrees of freedom to recover known 1D topological physics.
 
 ---
 
