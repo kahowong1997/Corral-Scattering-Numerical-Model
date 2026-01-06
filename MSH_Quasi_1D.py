@@ -95,10 +95,14 @@ def Dressed_GF(kx, params):
         T = np.ascontiguousarray(np.linalg.inv(H_V_inv - G_corral))
   
     # 4. Dyson Equation for the Center Point
-    G_down = GF_hybrid(kx, W_c/2.0, params)
-    G_up = GF_hybrid(kx, -W_c/2.0, params)
+    G_down = np.ascontiguousarray(GF_hybrid(kx, W_c/2.0, params))
+    G_up = np.ascontiguousarray(GF_hybrid(kx, -W_c/2.0, params))
 
-    T00, T01, T10, T11 = T[:4, :4], T[:4, 4:], T[4:, :4], T[4:, 4:]
+    T00 = np.ascontiguousarray(T[:4, :4])
+    T01 = np.ascontiguousarray(T[:4, 4:])
+    T10 = np.ascontiguousarray(T[4:, :4])
+    T11 = np.ascontiguousarray(T[4:, 4:])
+
     G_dressed = G_local + G_down @ T00 @ G_up + G_down @ T01 @ G_down + \
                 G_up @ T10 @ G_up + G_up @ T11 @ G_down
     
