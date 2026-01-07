@@ -65,16 +65,16 @@ Optimized for the incorporation of massive and arbitrary corral geometries on su
 
 ### **3. Vectorized Integration Consistency (`verify_2D_integration.py`)**
 * **Methodology**: Numerical Fourier-transform integration of $G(k_x, Y)$ compared to the 2D library's vectorized residue summation.
-* **Accuracy**: $10^{-10}$ precision, verifying phase accumulation and decay coupling implementations.
+* **Accuracy**: $10^{-17}$ precision, verifying phase accumulation and decay coupling implementations.
 
 ### **4. Unique Vector Sorting & Symmetry Folding (`verify_sorting_algorithm.py`)**
 * **Methodology**: Comparison of $G(\mathbf{R}_i, \mathbf{R}_j)$ assembled via optimized sorting vs. brute-force vectorized calculation.
-* **Performance**: Benchmarks on a 30-site cluster (900 pairs) demonstrate a **~13.7x speedup** (113 unique vectors vs 900 total).
+* **Performance**: Benchmarks on a 30-site cluster (900 pairs) demonstrate a **~3.07x speedup** (571 unique vectors vs 900 total).
 * **Accuracy**: Numerical error of $\approx 8.8 \times 10^{-17}$, proving the logic is mathematically lossless.
 
 ### **5. T-Matrix Dyson Equation (`verify_T_matrix.py`)**
 * **Methodology**: Validation of the T-matrix against $T = V + V G_0 T$.
-* **Basis Integrity**: Success at $10^{-12}$ error proves the chiral sector split and basis reconstruction are exact.
+* **Basis Integrity**: Success at $10^{-15}$ error proves the chiral sector split and basis reconstruction are exact.
   
 ---
 
