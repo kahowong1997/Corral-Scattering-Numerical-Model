@@ -2,7 +2,7 @@ import numpy as np
 import numba
 from scipy.integrate import simpson
 from collections import namedtuple
-from MSH_Quasi_1D import GF_hybrid
+from corral_framework.MSH_Quasi_1D import GF_hybrid
 
 pauli=np.array([[[1, 0], [0, 1]],
                 [[0, 1], [1, 0]],
