@@ -18,7 +18,7 @@ def run_fair_benchmark():
     while True:
         pos = np.zeros((N_sites, 2))
         for i in range(N_sites):
-            n1, n2 = np.random.randint(-3, 3), np.random.randint(-3, 3)
+            n1, n2 = np.random.randint(-10, 10), np.random.randint(-10, 10)
             pos[i] = [n1 + 0.5*n2, (np.sqrt(3)/2)*n2]
         
         diffs = []
