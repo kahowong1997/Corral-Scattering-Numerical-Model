@@ -14,6 +14,9 @@ from MSH_Analytical_Kernel import (
     coefficients, denominator, get_adjugate, solve_poles, txs0, tzs0
 )
 
+txs0 = np.array([[0,0,1,0],[0,0,0,1],[1,0,0,0],[0,1,0,0]], dtype=np.complex128)
+tzs0 = np.array([[1,0,0,0],[0,1,0,0],[0,0,-1,0],[0,0,0,-1]], dtype=np.complex128)
+
 @numba.njit(cache=True)
 def GF_hybrid(kx, Y, params):
     """
