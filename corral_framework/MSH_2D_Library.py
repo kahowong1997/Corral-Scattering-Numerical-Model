@@ -16,7 +16,7 @@ import numba
 import numpy as np
 import scipy.linalg
 
-from MSH_Analytical_Kernel import (
+from .MSH_Analytical_Kernel import (
     coefficients, denominator, get_adjugate, solve_poles
 )
 
