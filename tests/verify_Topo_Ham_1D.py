@@ -1,5 +1,5 @@
 import numpy as np
-from MSH_Quasi_1D import Topo_Ham_1D
+from corral_framework import Topo_Ham_1D
 from collections import namedtuple
 
 pauli=np.array([[[1, 0], [0, 1]],
