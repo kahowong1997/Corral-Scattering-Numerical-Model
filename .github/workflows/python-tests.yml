@@ -26,3 +26,6 @@ jobs:
     - name: Run Sorting Algorithm Validation
       run: |
         python -m tests.verify_sorting_algorithm
+    - name: Run T-matrix Chiral Reconstruction Validation
+      run: |
+        python -m tests.verify_T_matrix
