@@ -1,6 +1,6 @@
 import numpy as np
-from MSH_2D_Library import build_GF_library, apply_GF_library_vectorized
-from MSH_Quasi_1D import GF_hybrid
+from corral_framework.MSH_2D_Library import build_GF_library, apply_GF_library_vectorized
+from corral_framework.MSH_Quasi_1D import GF_hybrid
 from collections import namedtuple
 
 Params = namedtuple('Params', ['t', 'mu', 'alpha', 'Delta'])
