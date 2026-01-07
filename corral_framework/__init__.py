@@ -9,6 +9,7 @@ confined in a quantum corral, with either quasi-1D or arbitrary 2D geometry.
 from .MSH_Quasi_1D import GF_Hybrid, Topo_Ham_1D
 from .MSH_2D_Library import (
     build_GF_library, 
+    apply_GF_library_vectorized,
     build_GF_matrix_final, 
     build_corral_basis, 
     build_T_matrix, 
