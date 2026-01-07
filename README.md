@@ -57,7 +57,7 @@ Optimized for the incorporation of massive and arbitrary corral geometries on su
 
 ### **1. Kernel Validation (`verify_hybrid_kernel.py`)**
 * **Methodology**: Comparison of the hybrid Green’s function $G(k_x, Y)$ (Residue Theorem) against high-resolution Simpson-rule integration.
-* **Accuracy**: Error margin within $10^{-14}$ (double-precision limit).
+* **Accuracy**: Error margin within $10^{-14}$.
 
 ### **2. Topological Hamiltonian 1D Limit (`verify_Topo_Ham_1D.py`)**
 * **Methodology**: Pinching the quasi-1D strip into a 1D wire ($W_c = \sqrt{3}, V \to \infty$) and comparing the result to the analytical 1D Shiba-chain Hamiltonian.
