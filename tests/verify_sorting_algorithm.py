@@ -78,7 +78,7 @@ def run_fair_benchmark():
     print(f"Redundant Vectors saved: {N_sites**2 - unique_vectors}")
     print(f"Vectorized Brute-Force:  {t_brute:.6f} s")
     print(f"Optimized Folding:       {t_opt:.6f} s")
-    print(f"Fair Speedup Factor:     {speedup:.2f}x")
+    print(f"Speedup Factor:     {speedup:.2f}x")
     print(f"Numerical Error:         {max_diff:.2e}")
     print("="*45)
     
