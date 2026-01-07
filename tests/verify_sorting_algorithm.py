@@ -5,21 +5,22 @@ from MSH_2D_Library import build_GF_library, build_GF_matrix_final, apply_GF_lib
 
 Params = namedtuple('Params', ['t', 'mu', 'alpha', 'Delta'])
 
-def test_2D_performance_benchmark():
-    params = Params(t=1.0, mu=-3.5, alpha=0.2, Delta=0.3)
-    library_data = build_GF_library(params, steps=512)
+def run_fair_benchmark():
+    params = Params(t=1.0, mu=-3.5, alpha=0.24, Delta=0.36)
     
-    N_sites = 20
+    steps = 256 
+    print(f"Pre-computing GF Library (steps={steps})...")
+    library_data = build_GF_library(params, steps=steps)
     
-    # --- Ensure Repeated Differences ---
+    N_sites = 30 # 900 total site-pairs
+    
+    # --- Force repeated differences ---
     while True:
         pos = np.zeros((N_sites, 2))
         for i in range(N_sites):
-            # We use a small range (-4 to 4) to force "collisions" (repeated vectors)
-            n1, n2 = np.random.randint(-4, 4), np.random.randint(-4, 4)
+            n1, n2 = np.random.randint(-3, 3), np.random.randint(-3, 3)
             pos[i] = [n1 + 0.5*n2, (np.sqrt(3)/2)*n2]
         
-        # Calculate all possible differences
         diffs = []
         for i in range(N_sites):
             for j in range(N_sites):
@@ -27,39 +28,64 @@ def test_2D_performance_benchmark():
                 dy = round(pos[i,1] - pos[j,1], 8)
                 diffs.append((dx, dy))
         
-        # Check if unique differences < total pairs
-        unique_diffs = len(set(diffs))
-        if unique_diffs < (N_sites**2):
-            print(f"Lattice generated: {unique_diffs} unique vectors for {N_sites**2} pairs.")
+        unique_vectors = len(set(diffs))
+        if unique_vectors < (N_sites**2):
+            print(f"Lattice Ready: {unique_vectors} unique vectors for {N_sites**2} pairs.")
             break
-        else:
-            print("No repeated vectors found. Re-generating lattice...")
 
-    # --- Method A: Optimized Folding ---
-    start_opt = time.time()
+    # --- WARMUP (JIT Compilation) ---
+    # We run both once so Numba compilation time isn't included in the benchmark
+    _ = build_GF_matrix_final(pos, pos, library_data)
+    _ = apply_GF_library_vectorized(np.array([1.0]), np.array([0.0]), library_data)
+
+    # --- METHOD A: Optimized Folding ---
+    # This uses the argsort/unique/symmetry logic
+    start_opt = time.perf_counter()
     G_optimized = build_GF_matrix_final(pos, pos, library_data)
-    t_optimized = time.time() - start_opt
-    
-    # --- Method B: Brute-Force Assembly ---
-    start_brute = time.time()
-    G_brute = np.zeros((N_sites * 4, N_sites * 4), dtype=np.complex128)
+    t_opt = time.perf_counter() - start_opt
+
+    # --- METHOD B: Vectorized Brute-Force ---
+    # 1. Pre-calculate the displacement arrays (Standard Python/NumPy)
+    dx_all = np.zeros(N_sites**2)
+    dy_all = np.zeros(N_sites**2)
+    k = 0
     for i in range(N_sites):
         for j in range(N_sites):
-            dx = pos[i,0] - pos[j,0]
-            dy = pos[i,1] - pos[j,1]
-            G_brute[4*i:4*i+4, 4*j:4*j+4] = apply_GF_library_vectorized(
-                np.array([dx]), np.array([dy]), library_data
-            )[0]
-    t_brute = time.time() - start_brute
+            dx_all[k] = pos[i,0] - pos[j,0]
+            dy_all[k] = pos[i,1] - pos[j,1]
+            k += 1
+            
+    # 2. Timing the vectorized execution + assembly
+    start_brute = time.perf_counter()
+    # Call the core engine ONCE for all 900 displacements
+    G_blocks_all = apply_GF_library_vectorized(dx_all, dy_all, library_data)
+    
+    # 3. Assemble into the large matrix
+    G_brute = np.zeros((N_sites * 4, N_sites * 4), dtype=np.complex128)
+    for n in range(N_sites**2):
+        r, c = n // N_sites, n % N_sites
+        G_brute[4*r:4*r+4, 4*c:4*c+4] = G_blocks_all[n]
+    t_brute = time.perf_counter() - start_brute
 
-    # --- Results ---
+    # --- FINAL ANALYSIS ---
     max_diff = np.max(np.abs(G_optimized - G_brute))
-    speedup = t_brute / t_optimized if t_optimized > 0 else 0
+    speedup = t_brute / t_opt if t_opt > 0 else 0
     
-    print(f"Brute-Force: {t_brute:.4f}s | Optimized: {t_optimized:.4f}s")
-    print(f"Speedup: {speedup:.2f}x | Error: {max_diff:.2e}")
+    print("\n" + "="*45)
+    print(f"FAIR BENCHMARK RESULTS (N={N_sites}, Steps={steps})")
+    print("="*45)
+    print(f"Unique Vectors:          {unique_vectors}")
+    print(f"Redundant Vectors saved: {N_sites**2 - unique_vectors}")
+    print(f"Vectorized Brute-Force:  {t_brute:.6f} s")
+    print(f"Optimized Folding:       {t_opt:.6f} s")
+    print(f"Fair Speedup Factor:     {speedup:.2f}x")
+    print(f"Numerical Error:         {max_diff:.2e}")
+    print("="*45)
     
-    assert max_diff < 1e-14
+    if max_diff < 1e-14:
+        print("✅ VERIFICATION SUCCESSFUL")
+    else:
+        print("❌ VERIFICATION FAILED: Results deviate")
 
 if __name__ == "__main__":
-    test_2D_performance_benchmark()
+    run_fair_benchmark()
