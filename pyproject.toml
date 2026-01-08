@@ -9,7 +9,7 @@ description = "A numerical framework for MSH scattering and Topological Hamilton
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [
-    {name = "Your Name"}
+    {name = "Ka Ho Wong"}
 ]
 dependencies = [
     "numpy",
